@@ -1,10 +1,11 @@
-const { PORT, MONGODB_URI } = require('./utils/config');
-const http = require('http');
 const express = require('express');
 
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+
+const { PORT, MONGODB_URI } = require('./utils/config');
+const logger = require('./utils/logger');
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -14,7 +15,6 @@ const blogSchema = new mongoose.Schema({
 });
 
 const Blog = mongoose.model('Blog', blogSchema);
-console.log({ MONGODB_URI });
 mongoose.connect(MONGODB_URI);
 
 app.use(cors());
@@ -35,5 +35,5 @@ app.post('/api/blogs', (request, response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
