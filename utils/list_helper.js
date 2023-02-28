@@ -20,8 +20,24 @@ const mostBlogs = (blogs) => {
   return { author: authorWithMostBlogs, blogs: blogCount };
 };
 
+const mostLikes = (blogs) => {
+  if (!blogs.length) return null;
+  const blogCountByAuthor = blogs.reduce((dict, blog) => {
+    dict[blog.author] ??= 0;
+    dict[blog.author] += blog.likes;
+    return dict;
+  }, {});
+
+  const [authorWithMostLikes, likesCount] = Object.entries(
+    blogCountByAuthor
+  ).reduce((prev, curr) => (prev[1] > curr[1] ? prev : curr));
+
+  return { author: authorWithMostLikes, likes: likesCount };
+};
+
 module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
