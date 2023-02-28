@@ -12,6 +12,7 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "no-console": ["error", { "allow": ["error", "info"] }]
+    "no-console": ["error", { "allow": ["error", "info"] }],
+    "arrow-body-style": "off"
   }
 }
