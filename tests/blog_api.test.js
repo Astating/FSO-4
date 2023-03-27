@@ -50,6 +50,23 @@ test('add one', async () => {
   expect(body.length).toEqual(3);
   expect(body[2]).toHaveProperty('title', 'Benjie');
 });
+
+test('add blog without specifying likes', async () => {
+  await api
+    .post('/api/blogs')
+    .send({
+      title: 'Benjie',
+      author: 'Turtle McFly',
+      url: 'Blueberry',
+    })
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const { body } = await api.get('/api/blogs');
+
+  expect(body[2]).toHaveProperty('likes', 0);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
