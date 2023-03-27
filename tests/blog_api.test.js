@@ -67,6 +67,24 @@ test('add blog without specifying likes', async () => {
   expect(body[2]).toHaveProperty('likes', 0);
 });
 
+test('should return 400 when title or url are not specified', async () => {
+  await api
+    .post('/api/blogs')
+    .send({
+      title: 'Benjie',
+      author: 'Turtle McFly',
+    })
+    .expect(400);
+
+  await api
+    .post('/api/blogs')
+    .send({
+      author: 'Turtle McFly',
+      url: 'Blueberry',
+    })
+    .expect(400);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
