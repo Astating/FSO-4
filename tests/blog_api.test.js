@@ -85,6 +85,34 @@ test('should return 400 when title or url are not specified', async () => {
     .expect(400);
 });
 
+test('should delete Blog entry', async () => {
+  const blog = await Blog.findOne();
+
+  await api.delete(`/api/blogs/${blog.id}`).expect(204);
+
+  const { body } = await api.get('/api/blogs').expect(200);
+
+  expect(body.length).toEqual(1);
+});
+
+test('should update Blog entry', async () => {
+  const blog = await Blog.findOne();
+
+  const { body: updated } = await api
+    .put(`/api/blogs/${blog.id}`)
+    .send({ title: 'Blueeeeee' })
+    .expect(200);
+
+  expect([blog.author, blog.likes, blog.url]).toEqual([
+    updated.author,
+    updated.likes,
+    updated.url,
+  ]);
+
+  expect(blog.title).not.toEqual(updated.title);
+  expect(updated.title).toEqual('Blueeeeee');
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
