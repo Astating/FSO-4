@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoToJson = require('./utils/toJson');
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -7,13 +8,7 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
 });
 
-blogSchema.set('toJSON', {
-  transform: (_document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
+blogSchema.set('toJSON', mongoToJson);
 
 const Blog = mongoose.model('Blog', blogSchema);
 
