@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { ValidationError } = require('../utils/errors');
 
 usersRouter.get('/', async (_req, response) => {
-  const users = await User.find();
+  const users = await User.find().populate('blogs', { likes: 0, user: 0 });
 
   response.status(200).json(users);
 });
