@@ -5,7 +5,11 @@ const errorHandler = (error, request, response, next) => {
 
   switch (error.name) {
     case 'ValidationError':
-      return response.status(400).send(error.message);
+      return response.status(400).send({ error: error.message });
+    case 'JsonWebTokenError':
+      return response.status(401).json({ error: error.message });
+    case 'TokenExpiredError':
+      return response.status(401).json({ error: 'Token expired' });
     default:
       next(error);
   }
